@@ -1,46 +1,51 @@
 package com.ruoyi.system.domain;
 
+import com.baomidou.mybatisplus.annotation.TableName;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.FieldStrategy;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  * 角色和部门关联 sys_role_dept
- * 
+ *
  * @author ruoyi
  */
-public class SysRoleDept
-{
-    /** 角色ID */
+@TableName(value = "sys_role_dept", autoResultMap = true)
+public class SysRoleDept {
+    /**
+     * 角色ID
+     */
+    @TableField(value = "role_id", insertStrategy = FieldStrategy.NOT_NULL)
     private Long roleId;
-    
-    /** 部门ID */
+
+    /**
+     * 部门ID
+     */
+    @TableField(value = "dept_id", insertStrategy = FieldStrategy.NOT_NULL)
     private Long deptId;
 
-    public Long getRoleId()
-    {
+    public Long getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(Long roleId)
-    {
+    public void setRoleId(Long roleId) {
         this.roleId = roleId;
     }
 
-    public Long getDeptId()
-    {
+    public Long getDeptId() {
         return deptId;
     }
 
-    public void setDeptId(Long deptId)
-    {
+    public void setDeptId(Long deptId) {
         this.deptId = deptId;
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("roleId", getRoleId())
-            .append("deptId", getDeptId())
-            .toString();
+        return new ToStringBuilder(this, ToStringStyle.MULTI_LINE_STYLE)
+                .append("roleId", getRoleId())
+                .append("deptId", getDeptId())
+                .toString();
     }
 }

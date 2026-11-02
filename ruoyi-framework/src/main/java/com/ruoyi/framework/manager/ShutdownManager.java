@@ -1,7 +1,6 @@
 package com.ruoyi.framework.manager;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import jakarta.annotation.PreDestroy;
 
@@ -11,29 +10,22 @@ import jakarta.annotation.PreDestroy;
  * @author ruoyi
  */
 @Component
-public class ShutdownManager
-{
-    private static final Logger logger = LoggerFactory.getLogger("sys-user");
-
+@Slf4j(topic = "sys-user")
+public class ShutdownManager {
     @PreDestroy
-    public void destroy()
-    {
+    public void destroy() {
         shutdownAsyncManager();
     }
 
     /**
-     * 停止异步执行任务
+     * 记录关闭提示后停止异步任务线程池；关闭失败时通过 sys-user 日志记录完整异常，不向销毁流程抛出。
      */
-    private void shutdownAsyncManager()
-    {
-        try
-        {
-            logger.info("====关闭后台任务任务线程池====");
+    private void shutdownAsyncManager() {
+        try {
+            log.info("====关闭后台任务任务线程池====");
             AsyncManager.me().shutdown();
-        }
-        catch (Exception e)
-        {
-            logger.error(e.getMessage(), e);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
         }
     }
 }

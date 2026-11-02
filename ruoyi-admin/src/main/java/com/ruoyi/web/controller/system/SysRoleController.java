@@ -1,8 +1,8 @@
 package com.ruoyi.web.controller.system;
 
-import java.util.List;
+import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.web.vo.system.SysRoleVO;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,239 +16,225 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.core.domain.entity.SysDept;
-import com.ruoyi.common.core.domain.entity.SysRole;
-import com.ruoyi.common.core.domain.entity.SysUser;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.common.utils.poi.ExcelUtil;
-import com.ruoyi.framework.web.service.SysPermissionService;
-import com.ruoyi.framework.web.service.TokenService;
-import com.ruoyi.system.domain.SysUserRole;
-import com.ruoyi.system.service.ISysDeptService;
-import com.ruoyi.system.service.ISysRoleService;
-import com.ruoyi.system.service.ISysUserService;
+import com.ruoyi.biz.system.SysRoleBiz;
+import com.ruoyi.web.convert.WebBoundaryConvert;
+import com.ruoyi.web.convert.WebResponses;
+import com.ruoyi.web.form.system.*;
+import com.ruoyi.web.form.quartz.*;
+import com.ruoyi.web.form.framework.*;
 
 /**
- * 角色信息
- * 
- * @author ruoyi
+ * HTTP 协议入口；业务调用只通过 Biz，保留既有权限和审计注解。
  */
 @RestController
 @RequestMapping("/system/role")
-public class SysRoleController extends BaseController
-{
-    @Autowired
-    private ISysRoleService roleService;
+public class SysRoleController extends BaseController {
+    private final SysRoleBiz biz;
 
-    @Autowired
-    private TokenService tokenService;
-
-    @Autowired
-    private SysPermissionService permissionService;
-
-    @Autowired
-    private ISysUserService userService;
-
-    @Autowired
-    private ISysDeptService deptService;
-
-    @PreAuthorize("@ss.hasPermi('system:role:list')")
-    @GetMapping("/list")
-    public TableDataInfo list(SysRole role)
-    {
-        startPage();
-        List<SysRole> list = roleService.selectRoleList(role);
-        return getDataTable(list);
+    /**
+     * 通过构造器接收应用入口，不在控制器内访问领域服务或数据库。
+     *
+     * @param biz 应用业务入口
+     */
+    public SysRoleController(SysRoleBiz biz) {
+        this.biz = biz;
     }
 
+    /**
+     * 读取请求分页参数并经 Biz、Facade 传给 Service，查询完成后保留原分页响应。
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @param role role 请求参数或领域数据
+     * @return 原接口约定的处理结果；未找到或校验失败沿用原语义
+     */
+    @PreAuthorize("@ss.hasPermi('system:role:list')")
+    @GetMapping("/list")
+    public TableDataInfo list(SysRoleForm role) {
+        return WebResponses.toWeb(getDataTable(biz.list(WebBoundaryConvert.INSTANCE.toSysRoleBO(role), getPageDomain())));
+    }
+
+    /**
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @param response response 请求参数或领域数据
+     * @param role     role 请求参数或领域数据
+     */
     @Log(title = "角色管理", businessType = BusinessType.EXPORT)
     @PreAuthorize("@ss.hasPermi('system:role:export')")
     @PostMapping("/export")
-    public void export(HttpServletResponse response, SysRole role)
-    {
-        List<SysRole> list = roleService.selectRoleList(role);
-        ExcelUtil<SysRole> util = new ExcelUtil<SysRole>(SysRole.class);
-        util.exportExcel(response, list, "角色数据");
+    public void export(HttpServletResponse response, SysRoleForm role) {
+        java.util.List<SysRoleVO> rows = biz.export(WebBoundaryConvert.INSTANCE.toSysRoleBO(role)).stream()
+                .map(WebBoundaryConvert.INSTANCE::toSysRoleVO).toList();
+        new ExcelUtil<SysRoleVO>(SysRoleVO.class).exportExcel(response, rows, "角色数据");
     }
 
     /**
-     * 根据角色编号获取详细信息
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @param roleId roleId 请求参数或领域数据
+     * @return 原接口约定的处理结果；未找到或校验失败沿用原语义
      */
     @PreAuthorize("@ss.hasPermi('system:role:query')")
     @GetMapping(value = "/{roleId}")
-    public AjaxResult getInfo(@PathVariable Long roleId)
-    {
-        roleService.checkRoleDataScope(roleId);
-        return success(roleService.selectRoleById(roleId));
+    public AjaxResult getInfo(@PathVariable Long roleId) {
+        return WebResponses.toWeb(AjaxResult.success(biz.getInfo(roleId)));
     }
 
     /**
-     * 新增角色
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @param role role 请求参数或领域数据
+     * @return 原接口约定的处理结果；未找到或校验失败沿用原语义
      */
     @PreAuthorize("@ss.hasPermi('system:role:add')")
     @Log(title = "角色管理", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@Validated @RequestBody SysRole role)
-    {
-        if (!roleService.checkRoleNameUnique(role))
-        {
-            return error("新增角色'" + role.getRoleName() + "'失败，角色名称已存在");
-        }
-        else if (!roleService.checkRoleKeyUnique(role))
-        {
-            return error("新增角色'" + role.getRoleName() + "'失败，角色权限已存在");
-        }
-        role.setCreateBy(getUsername());
-        return toAjax(roleService.insertRole(role));
-
+    public AjaxResult add(@Validated @RequestBody SysRoleForm role) {
+        return toAjax(biz.add(WebBoundaryConvert.INSTANCE.toSysRoleBO(role)));
     }
 
     /**
-     * 修改保存角色
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @param role role 请求参数或领域数据
+     * @return 原接口约定的处理结果；未找到或校验失败沿用原语义
      */
     @PreAuthorize("@ss.hasPermi('system:role:edit')")
     @Log(title = "角色管理", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@Validated @RequestBody SysRole role)
-    {
-        roleService.checkRoleAllowed(role);
-        roleService.checkRoleDataScope(role.getRoleId());
-        if (!roleService.checkRoleNameUnique(role))
-        {
-            return error("修改角色'" + role.getRoleName() + "'失败，角色名称已存在");
-        }
-        else if (!roleService.checkRoleKeyUnique(role))
-        {
-            return error("修改角色'" + role.getRoleName() + "'失败，角色权限已存在");
-        }
-        role.setUpdateBy(getUsername());
-        
-        if (roleService.updateRole(role) > 0)
-        {
-            // 刷新所有持有该角色的在线用户权限
-            tokenService.refreshPermissionByRoleId(role.getRoleId(), permissionService);
-            return success();
-        }
-        return error("修改角色'" + role.getRoleName() + "'失败，请联系管理员");
+    public AjaxResult edit(@Validated @RequestBody SysRoleForm role) {
+        biz.edit(WebBoundaryConvert.INSTANCE.toSysRoleBO(role));
+        return AjaxResult.success();
     }
 
     /**
-     * 修改保存数据权限
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @param role role 请求参数或领域数据
+     * @return 原接口约定的处理结果；未找到或校验失败沿用原语义
      */
     @PreAuthorize("@ss.hasPermi('system:role:edit')")
     @Log(title = "角色管理", businessType = BusinessType.UPDATE)
     @PutMapping("/dataScope")
-    public AjaxResult dataScope(@RequestBody SysRole role)
-    {
-        roleService.checkRoleAllowed(role);
-        roleService.checkRoleDataScope(role.getRoleId());
-        return toAjax(roleService.authDataScope(role));
+    public AjaxResult dataScope(@RequestBody SysRoleForm role) {
+        return toAjax(biz.dataScope(WebBoundaryConvert.INSTANCE.toSysRoleBO(role)));
     }
 
     /**
-     * 状态修改
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @param role role 请求参数或领域数据
+     * @return 原接口约定的处理结果；未找到或校验失败沿用原语义
      */
     @PreAuthorize("@ss.hasPermi('system:role:edit')")
     @Log(title = "角色管理", businessType = BusinessType.UPDATE)
     @PutMapping("/changeStatus")
-    public AjaxResult changeStatus(@RequestBody SysRole role)
-    {
-        roleService.checkRoleAllowed(role);
-        roleService.checkRoleDataScope(role.getRoleId());
-        role.setUpdateBy(getUsername());
-        return toAjax(roleService.updateRoleStatus(role));
+    public AjaxResult changeStatus(@RequestBody SysRoleForm role) {
+        return toAjax(biz.changeStatus(WebBoundaryConvert.INSTANCE.toSysRoleBO(role)));
     }
 
     /**
-     * 删除角色
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @param roleIds roleIds 请求参数或领域数据
+     * @return 原接口约定的处理结果；未找到或校验失败沿用原语义
      */
     @PreAuthorize("@ss.hasPermi('system:role:remove')")
     @Log(title = "角色管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{roleIds}")
-    public AjaxResult remove(@PathVariable Long[] roleIds)
-    {
-        return toAjax(roleService.deleteRoleByIds(roleIds));
+    public AjaxResult remove(@PathVariable Long[] roleIds) {
+        return toAjax(biz.remove(roleIds));
     }
 
     /**
-     * 获取角色选择框列表
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @return 原接口约定的处理结果；未找到或校验失败沿用原语义
      */
     @PreAuthorize("@ss.hasPermi('system:role:query')")
     @GetMapping("/optionselect")
-    public AjaxResult optionselect()
-    {
-        return success(roleService.selectRoleAll());
+    public AjaxResult optionselect() {
+        return WebResponses.toWeb(AjaxResult.success(biz.optionselect()));
     }
 
     /**
-     * 查询已分配用户角色列表
+     * 读取请求分页参数并经 Biz、Facade 传给 Service，查询完成后保留原分页响应。
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @param user user 请求参数或领域数据
+     * @return 原接口约定的处理结果；未找到或校验失败沿用原语义
      */
     @PreAuthorize("@ss.hasPermi('system:role:list')")
     @GetMapping("/authUser/allocatedList")
-    public TableDataInfo allocatedList(SysUser user)
-    {
-        startPage();
-        List<SysUser> list = userService.selectAllocatedList(user);
-        return getDataTable(list);
+    public TableDataInfo allocatedList(SysUserForm user) {
+        return WebResponses.toWeb(getDataTable(biz.allocatedList(WebBoundaryConvert.INSTANCE.toSysUserBO(user), getPageDomain())));
     }
 
     /**
-     * 查询未分配用户角色列表
+     * 读取请求分页参数并经 Biz、Facade 传给 Service，查询完成后保留原分页响应。
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @param user user 请求参数或领域数据
+     * @return 原接口约定的处理结果；未找到或校验失败沿用原语义
      */
     @PreAuthorize("@ss.hasPermi('system:role:list')")
     @GetMapping("/authUser/unallocatedList")
-    public TableDataInfo unallocatedList(SysUser user)
-    {
-        startPage();
-        List<SysUser> list = userService.selectUnallocatedList(user);
-        return getDataTable(list);
+    public TableDataInfo unallocatedList(SysUserForm user) {
+        return WebResponses.toWeb(getDataTable(biz.unallocatedList(WebBoundaryConvert.INSTANCE.toSysUserBO(user), getPageDomain())));
     }
 
     /**
-     * 取消授权用户
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @param userRole userRole 请求参数或领域数据
+     * @return 原接口约定的处理结果；未找到或校验失败沿用原语义
      */
     @PreAuthorize("@ss.hasPermi('system:role:edit')")
     @Log(title = "角色管理", businessType = BusinessType.GRANT)
     @PutMapping("/authUser/cancel")
-    public AjaxResult cancelAuthUser(@RequestBody SysUserRole userRole)
-    {
-        return toAjax(roleService.deleteAuthUser(userRole));
+    public AjaxResult cancelAuthUser(@RequestBody SysUserRoleForm userRole) {
+        return toAjax(biz.cancelAuthUser(WebBoundaryConvert.INSTANCE.toSysUserRoleBO(userRole)));
     }
 
     /**
-     * 批量取消授权用户
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @param roleId  roleId 请求参数或领域数据
+     * @param userIds userIds 请求参数或领域数据
+     * @return 原接口约定的处理结果；未找到或校验失败沿用原语义
      */
     @PreAuthorize("@ss.hasPermi('system:role:edit')")
     @Log(title = "角色管理", businessType = BusinessType.GRANT)
     @PutMapping("/authUser/cancelAll")
-    public AjaxResult cancelAuthUserAll(Long roleId, Long[] userIds)
-    {
-        return toAjax(roleService.deleteAuthUsers(roleId, userIds));
+    public AjaxResult cancelAuthUserAll(Long roleId, Long[] userIds) {
+        return toAjax(biz.cancelAuthUserAll(roleId, userIds));
     }
 
     /**
-     * 批量选择用户授权
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @param roleId  roleId 请求参数或领域数据
+     * @param userIds userIds 请求参数或领域数据
+     * @return 原接口约定的处理结果；未找到或校验失败沿用原语义
      */
     @PreAuthorize("@ss.hasPermi('system:role:edit')")
     @Log(title = "角色管理", businessType = BusinessType.GRANT)
     @PutMapping("/authUser/selectAll")
-    public AjaxResult selectAuthUserAll(Long roleId, Long[] userIds)
-    {
-        roleService.checkRoleDataScope(roleId);
-        return toAjax(roleService.insertAuthUsers(roleId, userIds));
+    public AjaxResult selectAuthUserAll(Long roleId, Long[] userIds) {
+        return toAjax(biz.selectAuthUserAll(roleId, userIds));
     }
 
     /**
-     * 获取对应角色部门树列表
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @param roleId roleId 请求参数或领域数据
+     * @return 原接口约定的处理结果；未找到或校验失败沿用原语义
      */
     @PreAuthorize("@ss.hasPermi('system:role:query')")
     @GetMapping(value = "/deptTree/{roleId}")
-    public AjaxResult deptTree(@PathVariable("roleId") Long roleId)
-    {
-        AjaxResult ajax = AjaxResult.success();
-        ajax.put("checkedKeys", deptService.selectDeptListByRoleId(roleId));
-        ajax.put("depts", deptService.selectDeptTreeList(new SysDept()));
-        return ajax;
+    public AjaxResult deptTree(@PathVariable("roleId") Long roleId) {
+        return WebResponses.withFields(biz.deptTree(roleId));
     }
 }

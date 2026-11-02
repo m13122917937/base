@@ -1,0 +1,1 @@
+[{"@type":"com.ruoyi.common.core.domain.entity.SysDictData","createTime":"2023-11-15 06:13:20","default":false,"dictCode":3L,"dictLabel":"fixture-label","dictType":"fixture-type","dictValue":"1","params":{"@type":"java.util.HashMap"}}]

@@ -1,9 +1,7 @@
 package com.ruoyi.web.controller.system;
 
-import java.util.List;
 import java.util.Map;
-import org.apache.commons.lang3.ArrayUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,133 +13,119 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.ruoyi.common.annotation.Log;
-import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.core.domain.entity.SysDept;
 import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.system.service.ISysDeptService;
+import com.ruoyi.biz.system.SysDeptBiz;
+import com.ruoyi.web.convert.WebBoundaryConvert;
+import com.ruoyi.web.convert.WebResponses;
+import com.ruoyi.web.form.system.*;
+import com.ruoyi.web.form.quartz.*;
+import com.ruoyi.web.form.framework.*;
 
 /**
- * 部门信息
- * 
- * @author ruoyi
+ * HTTP 协议入口；业务调用只通过 Biz，保留既有权限和审计注解。
  */
 @RestController
 @RequestMapping("/system/dept")
-public class SysDeptController extends BaseController
-{
-    @Autowired
-    private ISysDeptService deptService;
+public class SysDeptController extends BaseController {
+    private final SysDeptBiz biz;
 
     /**
-     * 获取部门列表
+     * 通过构造器接收应用入口，不在控制器内访问领域服务或数据库。
+     *
+     * @param biz 应用业务入口
+     */
+    public SysDeptController(SysDeptBiz biz) {
+        this.biz = biz;
+    }
+
+    /**
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @param dept dept 请求参数或领域数据
+     * @return 原接口约定的处理结果；未找到或校验失败沿用原语义
      */
     @PreAuthorize("@ss.hasPermi('system:dept:list')")
     @GetMapping("/list")
-    public AjaxResult list(SysDept dept)
-    {
-        List<SysDept> depts = deptService.selectDeptList(dept);
-        return success(depts);
+    public AjaxResult list(SysDeptForm dept) {
+        return WebResponses.toWeb(AjaxResult.success(biz.list(WebBoundaryConvert.INSTANCE.toSysDeptBO(dept))));
     }
 
     /**
-     * 查询部门列表（排除节点）
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @param deptId deptId 请求参数或领域数据
+     * @return 原接口约定的处理结果；未找到或校验失败沿用原语义
      */
     @PreAuthorize("@ss.hasPermi('system:dept:list')")
     @GetMapping("/list/exclude/{deptId}")
-    public AjaxResult excludeChild(@PathVariable(value = "deptId", required = false) Long deptId)
-    {
-        List<SysDept> depts = deptService.selectDeptList(new SysDept());
-        depts.removeIf(d -> d.getDeptId().intValue() == deptId || ArrayUtils.contains(StringUtils.split(d.getAncestors(), ","), deptId + ""));
-        return success(depts);
+    public AjaxResult excludeChild(@PathVariable(value = "deptId", required = false) Long deptId) {
+        return WebResponses.toWeb(AjaxResult.success(biz.excludeChild(deptId)));
     }
 
     /**
-     * 根据部门编号获取详细信息
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @param deptId deptId 请求参数或领域数据
+     * @return 原接口约定的处理结果；未找到或校验失败沿用原语义
      */
     @PreAuthorize("@ss.hasPermi('system:dept:query')")
     @GetMapping(value = "/{deptId}")
-    public AjaxResult getInfo(@PathVariable Long deptId)
-    {
-        deptService.checkDeptDataScope(deptId);
-        return success(deptService.selectDeptById(deptId));
+    public AjaxResult getInfo(@PathVariable Long deptId) {
+        return WebResponses.toWeb(AjaxResult.success(biz.getInfo(deptId)));
     }
 
     /**
-     * 新增部门
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @param dept dept 请求参数或领域数据
+     * @return 原接口约定的处理结果；未找到或校验失败沿用原语义
      */
     @PreAuthorize("@ss.hasPermi('system:dept:add')")
     @Log(title = "部门管理", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@Validated @RequestBody SysDept dept)
-    {
-        if (!deptService.checkDeptNameUnique(dept))
-        {
-            return error("新增部门'" + dept.getDeptName() + "'失败，部门名称已存在");
-        }
-        dept.setCreateBy(getUsername());
-        return toAjax(deptService.insertDept(dept));
+    public AjaxResult add(@Validated @RequestBody SysDeptForm dept) {
+        return toAjax(biz.add(WebBoundaryConvert.INSTANCE.toSysDeptBO(dept)));
     }
 
     /**
-     * 修改部门
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @param dept dept 请求参数或领域数据
+     * @return 原接口约定的处理结果；未找到或校验失败沿用原语义
      */
     @PreAuthorize("@ss.hasPermi('system:dept:edit')")
     @Log(title = "部门管理", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@Validated @RequestBody SysDept dept)
-    {
-        Long deptId = dept.getDeptId();
-        deptService.checkDeptDataScope(deptId);
-        if (!deptService.checkDeptNameUnique(dept))
-        {
-            return error("修改部门'" + dept.getDeptName() + "'失败，部门名称已存在");
-        }
-        else if (dept.getParentId().equals(deptId))
-        {
-            return error("修改部门'" + dept.getDeptName() + "'失败，上级部门不能是自己");
-        }
-        else if (StringUtils.equals(UserConstants.DEPT_DISABLE, dept.getStatus()) && deptService.selectNormalChildrenDeptById(deptId) > 0)
-        {
-            return error("该部门包含未停用的子部门！");
-        }
-        dept.setUpdateBy(getUsername());
-        return toAjax(deptService.updateDept(dept));
+    public AjaxResult edit(@Validated @RequestBody SysDeptForm dept) {
+        return toAjax(biz.edit(WebBoundaryConvert.INSTANCE.toSysDeptBO(dept)));
     }
 
     /**
-     * 保存部门排序
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @param params params 请求参数或领域数据
+     * @return 原接口约定的处理结果；未找到或校验失败沿用原语义
      */
     @PreAuthorize("@ss.hasPermi('system:dept:edit')")
     @Log(title = "保存部门排序", businessType = BusinessType.UPDATE)
     @PutMapping("/updateSort")
-    public AjaxResult updateSort(@RequestBody Map<String, String> params)
-    {
-        String[] deptIds = params.get("deptIds").split(",");
-        String[] orderNums = params.get("orderNums").split(",");
-        deptService.updateDeptSort(deptIds, orderNums);
-        return success();
+    public AjaxResult updateSort(@RequestBody Map<String, String> params) {
+        biz.updateSort(params);
+        return AjaxResult.success();
     }
 
     /**
-     * 删除部门
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @param deptId deptId 请求参数或领域数据
+     * @return 原接口约定的处理结果；未找到或校验失败沿用原语义
      */
     @PreAuthorize("@ss.hasPermi('system:dept:remove')")
     @Log(title = "部门管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{deptId}")
-    public AjaxResult remove(@PathVariable Long deptId)
-    {
-        if (deptService.hasChildByDeptId(deptId))
-        {
-            return warn("存在下级部门,不允许删除");
-        }
-        if (deptService.checkDeptExistUser(deptId))
-        {
-            return warn("部门存在用户,不允许删除");
-        }
-        deptService.checkDeptDataScope(deptId);
-        return toAjax(deptService.deleteDeptById(deptId));
+    public AjaxResult remove(@PathVariable Long deptId) {
+        return toAjax(biz.remove(deptId));
     }
 }

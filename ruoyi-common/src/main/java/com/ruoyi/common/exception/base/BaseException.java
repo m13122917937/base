@@ -1,97 +1,31 @@
 package com.ruoyi.common.exception.base;
 
-import com.ruoyi.common.utils.MessageUtils;
-import com.ruoyi.common.utils.StringUtils;
-
 /**
- * 基础异常
- * 
- * @author ruoyi
+ * 固定中文消息的业务基础异常，不解析语言、资源键或国际化参数。
  */
-public class BaseException extends RuntimeException
-{
+public class BaseException extends RuntimeException {
     private static final long serialVersionUID = 1L;
+    private final String module;
 
     /**
-     * 所属模块
+     * 保存异常所属模块及可直接展示的消息，不访问 Spring 或外部资源。
      */
-    private String module;
-
-    /**
-     * 错误码
-     */
-    private String code;
-
-    /**
-     * 错误码对应的参数
-     */
-    private Object[] args;
-
-    /**
-     * 错误消息
-     */
-    private String defaultMessage;
-
-    public BaseException(String module, String code, Object[] args, String defaultMessage)
-    {
+    public BaseException(String module, String message) {
+        super(message);
         this.module = module;
-        this.code = code;
-        this.args = args;
-        this.defaultMessage = defaultMessage;
     }
 
-    public BaseException(String module, String code, Object[] args)
-    {
-        this(module, code, args, null);
+    /**
+     * 保存无模块的业务消息，不执行国际化查找。
+     */
+    public BaseException(String message) {
+        this(null, message);
     }
 
-    public BaseException(String module, String defaultMessage)
-    {
-        this(module, null, null, defaultMessage);
-    }
-
-    public BaseException(String code, Object[] args)
-    {
-        this(null, code, args, null);
-    }
-
-    public BaseException(String defaultMessage)
-    {
-        this(null, null, null, defaultMessage);
-    }
-
-    @Override
-    public String getMessage()
-    {
-        String message = null;
-        if (!StringUtils.isEmpty(code))
-        {
-            message = MessageUtils.message(code, args);
-        }
-        if (message == null)
-        {
-            message = defaultMessage;
-        }
-        return message;
-    }
-
-    public String getModule()
-    {
+    /**
+     * 返回异常所属模块；未指定模块时返回 null。
+     */
+    public String getModule() {
         return module;
-    }
-
-    public String getCode()
-    {
-        return code;
-    }
-
-    public Object[] getArgs()
-    {
-        return args;
-    }
-
-    public String getDefaultMessage()
-    {
-        return defaultMessage;
     }
 }

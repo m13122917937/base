@@ -1,9 +1,8 @@
 package com.ruoyi.web.controller.system;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.web.vo.system.SysDictDataVO;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,105 +16,120 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.core.domain.entity.SysDictData;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.common.utils.poi.ExcelUtil;
-import com.ruoyi.system.service.ISysDictDataService;
-import com.ruoyi.system.service.ISysDictTypeService;
+import com.ruoyi.biz.system.SysDictDataBiz;
+import com.ruoyi.web.convert.WebBoundaryConvert;
+import com.ruoyi.web.convert.WebResponses;
+import com.ruoyi.web.form.system.*;
+import com.ruoyi.web.form.quartz.*;
+import com.ruoyi.web.form.framework.*;
 
 /**
- * 数据字典信息
- * 
- * @author ruoyi
+ * HTTP 协议入口；业务调用只通过 Biz，保留既有权限和审计注解。
  */
 @RestController
 @RequestMapping("/system/dict/data")
-public class SysDictDataController extends BaseController
-{
-    @Autowired
-    private ISysDictDataService dictDataService;
+public class SysDictDataController extends BaseController {
+    private final SysDictDataBiz biz;
 
-    @Autowired
-    private ISysDictTypeService dictTypeService;
-
-    @PreAuthorize("@ss.hasPermi('system:dict:list')")
-    @GetMapping("/list")
-    public TableDataInfo list(SysDictData dictData)
-    {
-        startPage();
-        List<SysDictData> list = dictDataService.selectDictDataList(dictData);
-        return getDataTable(list);
+    /**
+     * 通过构造器接收应用入口，不在控制器内访问领域服务或数据库。
+     *
+     * @param biz 应用业务入口
+     */
+    public SysDictDataController(SysDictDataBiz biz) {
+        this.biz = biz;
     }
 
+    /**
+     * 读取请求分页参数并经 Biz、Facade 传给 Service，查询完成后保留原分页响应。
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @param dictData dictData 请求参数或领域数据
+     * @return 原接口约定的处理结果；未找到或校验失败沿用原语义
+     */
+    @PreAuthorize("@ss.hasPermi('system:dict:list')")
+    @GetMapping("/list")
+    public TableDataInfo list(SysDictDataForm dictData) {
+        return WebResponses.toWeb(getDataTable(biz.list(WebBoundaryConvert.INSTANCE.toSysDictDataBO(dictData), getPageDomain())));
+    }
+
+    /**
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @param response response 请求参数或领域数据
+     * @param dictData dictData 请求参数或领域数据
+     */
     @Log(title = "字典数据", businessType = BusinessType.EXPORT)
     @PreAuthorize("@ss.hasPermi('system:dict:export')")
     @PostMapping("/export")
-    public void export(HttpServletResponse response, SysDictData dictData)
-    {
-        List<SysDictData> list = dictDataService.selectDictDataList(dictData);
-        ExcelUtil<SysDictData> util = new ExcelUtil<SysDictData>(SysDictData.class);
-        util.exportExcel(response, list, "字典数据");
+    public void export(HttpServletResponse response, SysDictDataForm dictData) {
+        java.util.List<SysDictDataVO> rows = biz.export(WebBoundaryConvert.INSTANCE.toSysDictDataBO(dictData)).stream()
+                .map(WebBoundaryConvert.INSTANCE::toSysDictDataVO).toList();
+        new ExcelUtil<SysDictDataVO>(SysDictDataVO.class).exportExcel(response, rows, "字典数据");
     }
 
     /**
-     * 查询字典数据详细
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @param dictCode dictCode 请求参数或领域数据
+     * @return 原接口约定的处理结果；未找到或校验失败沿用原语义
      */
     @PreAuthorize("@ss.hasPermi('system:dict:query')")
     @GetMapping(value = "/{dictCode}")
-    public AjaxResult getInfo(@PathVariable Long dictCode)
-    {
-        return success(dictDataService.selectDictDataById(dictCode));
+    public AjaxResult getInfo(@PathVariable Long dictCode) {
+        return WebResponses.toWeb(AjaxResult.success(biz.getInfo(dictCode)));
     }
 
     /**
-     * 根据字典类型查询字典数据信息
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @param dictType dictType 请求参数或领域数据
+     * @return 原接口约定的处理结果；未找到或校验失败沿用原语义
      */
     @GetMapping(value = "/type/{dictType}")
-    public AjaxResult dictType(@PathVariable String dictType)
-    {
-        List<SysDictData> data = dictTypeService.selectDictDataByType(dictType);
-        if (StringUtils.isNull(data))
-        {
-            data = new ArrayList<SysDictData>();
-        }
-        return success(data);
+    public AjaxResult dictType(@PathVariable String dictType) {
+        return WebResponses.toWeb(AjaxResult.success(biz.dictType(dictType)));
     }
 
     /**
-     * 新增字典类型
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @param dict dict 请求参数或领域数据
+     * @return 原接口约定的处理结果；未找到或校验失败沿用原语义
      */
     @PreAuthorize("@ss.hasPermi('system:dict:add')")
     @Log(title = "字典数据", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@Validated @RequestBody SysDictData dict)
-    {
-        dict.setCreateBy(getUsername());
-        return toAjax(dictDataService.insertDictData(dict));
+    public AjaxResult add(@Validated @RequestBody SysDictDataForm dict) {
+        return toAjax(biz.add(WebBoundaryConvert.INSTANCE.toSysDictDataBO(dict)));
     }
 
     /**
-     * 修改保存字典类型
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @param dict dict 请求参数或领域数据
+     * @return 原接口约定的处理结果；未找到或校验失败沿用原语义
      */
     @PreAuthorize("@ss.hasPermi('system:dict:edit')")
     @Log(title = "字典数据", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@Validated @RequestBody SysDictData dict)
-    {
-        dict.setUpdateBy(getUsername());
-        return toAjax(dictDataService.updateDictData(dict));
+    public AjaxResult edit(@Validated @RequestBody SysDictDataForm dict) {
+        return toAjax(biz.edit(WebBoundaryConvert.INSTANCE.toSysDictDataBO(dict)));
     }
 
     /**
-     * 删除字典类型
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @param dictCodes dictCodes 请求参数或领域数据
+     * @return 原接口约定的处理结果；未找到或校验失败沿用原语义
      */
     @PreAuthorize("@ss.hasPermi('system:dict:remove')")
     @Log(title = "字典类型", businessType = BusinessType.DELETE)
     @DeleteMapping("/{dictCodes}")
-    public AjaxResult remove(@PathVariable Long[] dictCodes)
-    {
-        dictDataService.deleteDictDataByIds(dictCodes);
-        return success();
+    public AjaxResult remove(@PathVariable Long[] dictCodes) {
+        biz.remove(dictCodes);
+        return AjaxResult.success();
     }
 }

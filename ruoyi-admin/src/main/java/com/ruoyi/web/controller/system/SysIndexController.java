@@ -1,64 +1,52 @@
 package com.ruoyi.web.controller.system;
 
 import java.util.Map;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.ruoyi.common.config.RuoYiConfig;
 import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.core.domain.entity.SysUser;
-import com.ruoyi.common.utils.SecurityUtils;
-import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.system.service.ISysUserService;
+import com.ruoyi.biz.system.SysIndexBiz;
+import com.ruoyi.web.convert.WebResponses;
+import com.ruoyi.web.form.system.*;
+import com.ruoyi.web.form.quartz.*;
+import com.ruoyi.web.form.framework.*;
 
 /**
- * 首页
- *
- * @author ruoyi
+ * HTTP 协议入口；业务调用只通过 Biz，保留既有权限和审计注解。
  */
 @RestController
-public class SysIndexController
-{
-    /** 系统基础配置 */
-    @Autowired
-    private RuoYiConfig ruoyiConfig;
-
-    @Autowired
-    private ISysUserService userService;
+public class SysIndexController {
+    private final SysIndexBiz biz;
 
     /**
-     * 访问首页，提示语
+     * 通过构造器接收应用入口，不在控制器内访问领域服务或数据库。
+     *
+     * @param biz 应用业务入口
      */
-    @RequestMapping("/")
-    public String index()
-    {
-        return StringUtils.format("欢迎使用{}后台管理框架，当前版本：v{}，请通过前端地址访问。", ruoyiConfig.getName(), ruoyiConfig.getVersion());
+    public SysIndexController(SysIndexBiz biz) {
+        this.biz = biz;
     }
 
     /**
-     * 解锁屏幕
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @return 原接口约定的处理结果；未找到或校验失败沿用原语义
+     */
+    @RequestMapping("/")
+    public String index() {
+        return biz.index();
+    }
+
+    /**
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @param body body 请求参数或领域数据
+     * @return 原接口约定的处理结果；未找到或校验失败沿用原语义
      */
     @PostMapping("/unlockscreen")
-    public AjaxResult unlockScreen(@RequestBody Map<String, String> body)
-    {
-        String password = body.get("password");
-        if (StringUtils.isEmpty(password))
-        {
-            return AjaxResult.error("密码不能为空");
-        }
-        String username = SecurityUtils.getUsername();
-        SysUser user = userService.selectUserByUserName(username);
-        if (user == null)
-        {
-            return AjaxResult.error("服务器超时，请重新登录");
-        }
-        if (!SecurityUtils.matchesPassword(password, user.getPassword()))
-        {
-            return AjaxResult.error("密码错误，请重新输入");
-        }
-
-        return AjaxResult.success("解锁成功");
+    public AjaxResult unlockScreen(@RequestBody Map<String, String> body) {
+        return AjaxResult.success(biz.unlockScreen(body));
     }
 }

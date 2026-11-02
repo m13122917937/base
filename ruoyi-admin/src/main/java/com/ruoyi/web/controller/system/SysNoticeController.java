@@ -1,7 +1,5 @@
 package com.ruoyi.web.controller.system;
 
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,134 +15,143 @@ import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.page.TableDataInfo;
-import com.ruoyi.common.core.text.Convert;
 import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.system.domain.SysNotice;
-import com.ruoyi.system.service.ISysNoticeReadService;
-import com.ruoyi.system.service.ISysNoticeService;
+import com.ruoyi.biz.system.SysNoticeBiz;
+import com.ruoyi.web.convert.WebBoundaryConvert;
+import com.ruoyi.web.convert.WebResponses;
+import com.ruoyi.web.form.system.*;
+import com.ruoyi.web.form.quartz.*;
+import com.ruoyi.web.form.framework.*;
 
 /**
- * 公告 信息操作处理
- * 
- * @author ruoyi
+ * HTTP 协议入口；业务调用只通过 Biz，保留既有权限和审计注解。
  */
 @RestController
 @RequestMapping("/system/notice")
-public class SysNoticeController extends BaseController
-{
-    @Autowired
-    private ISysNoticeService noticeService;
-
-    @Autowired
-    private ISysNoticeReadService noticeReadService;
+public class SysNoticeController extends BaseController {
+    private final SysNoticeBiz biz;
 
     /**
-     * 获取通知公告列表
+     * 通过构造器接收应用入口，不在控制器内访问领域服务或数据库。
+     *
+     * @param biz 应用业务入口
+     */
+    public SysNoticeController(SysNoticeBiz biz) {
+        this.biz = biz;
+    }
+
+    /**
+     * 读取请求分页参数并经 Biz、Facade 传给 Service，查询完成后保留原分页响应。
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @param notice notice 请求参数或领域数据
+     * @return 原接口约定的处理结果；未找到或校验失败沿用原语义
      */
     @PreAuthorize("@ss.hasPermi('system:notice:list')")
     @GetMapping("/list")
-    public TableDataInfo list(SysNotice notice)
-    {
-        startPage();
-        List<SysNotice> list = noticeService.selectNoticeList(notice);
-        return getDataTable(list);
+    public TableDataInfo list(SysNoticeForm notice) {
+        return WebResponses.toWeb(getDataTable(biz.list(WebBoundaryConvert.INSTANCE.toSysNoticeBO(notice), getPageDomain())));
     }
 
     /**
-     * 根据通知公告编号获取详细信息
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @param noticeId noticeId 请求参数或领域数据
+     * @return 原接口约定的处理结果；未找到或校验失败沿用原语义
      */
     @GetMapping(value = "/{noticeId}")
-    public AjaxResult getInfo(@PathVariable Long noticeId)
-    {
-        return success(noticeService.selectNoticeById(noticeId));
+    public AjaxResult getInfo(@PathVariable Long noticeId) {
+        return WebResponses.toWeb(AjaxResult.success(biz.getInfo(noticeId)));
     }
 
     /**
-     * 新增通知公告
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @param notice notice 请求参数或领域数据
+     * @return 原接口约定的处理结果；未找到或校验失败沿用原语义
      */
     @PreAuthorize("@ss.hasPermi('system:notice:add')")
     @Log(title = "通知公告", businessType = BusinessType.INSERT)
     @PostMapping
-    public AjaxResult add(@Validated @RequestBody SysNotice notice)
-    {
-        notice.setCreateBy(getUsername());
-        return toAjax(noticeService.insertNotice(notice));
+    public AjaxResult add(@Validated @RequestBody SysNoticeForm notice) {
+        return toAjax(biz.add(WebBoundaryConvert.INSTANCE.toSysNoticeBO(notice)));
     }
 
     /**
-     * 修改通知公告
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @param notice notice 请求参数或领域数据
+     * @return 原接口约定的处理结果；未找到或校验失败沿用原语义
      */
     @PreAuthorize("@ss.hasPermi('system:notice:edit')")
     @Log(title = "通知公告", businessType = BusinessType.UPDATE)
     @PutMapping
-    public AjaxResult edit(@Validated @RequestBody SysNotice notice)
-    {
-        notice.setUpdateBy(getUsername());
-        return toAjax(noticeService.updateNotice(notice));
+    public AjaxResult edit(@Validated @RequestBody SysNoticeForm notice) {
+        return toAjax(biz.edit(WebBoundaryConvert.INSTANCE.toSysNoticeBO(notice)));
     }
 
     /**
-     * 首页顶部公告列表（返回全部正常公告，带当前用户已读标记，最多5条）
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @return 原接口约定的处理结果；未找到或校验失败沿用原语义
      */
     @GetMapping("/listTop")
     @ResponseBody
-    public AjaxResult listTop()
-    {
-        Long userId = getUserId();
-        List<SysNotice> list = noticeReadService.selectNoticeListWithReadStatus(userId, 5);
-        long unreadCount = list.stream().filter(n -> !n.getIsRead()).count();
-        AjaxResult result = AjaxResult.success(list);
-        result.put("unreadCount", unreadCount);
-        return result;
+    public AjaxResult listTop() {
+        return WebResponses.withFields(biz.listTop());
     }
 
     /**
-     * 标记公告已读
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @param noticeId noticeId 请求参数或领域数据
+     * @return 原接口约定的处理结果；未找到或校验失败沿用原语义
      */
     @PostMapping("/markRead")
     @ResponseBody
-    public AjaxResult markRead(Long noticeId)
-    {
-        Long userId = getUserId();
-        noticeReadService.markRead(noticeId, userId);
-        return success();
+    public AjaxResult markRead(Long noticeId) {
+        biz.markRead(noticeId);
+        return AjaxResult.success();
     }
 
     /**
-     * 批量标记已读
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @param ids ids 请求参数或领域数据
+     * @return 原接口约定的处理结果；未找到或校验失败沿用原语义
      */
     @PostMapping("/markReadAll")
     @ResponseBody
-    public AjaxResult markReadAll(String ids)
-    {
-        Long userId = getUserId();
-        Long[] noticeIds = Convert.toLongArray(ids);
-        noticeReadService.markReadBatch(userId, noticeIds);
-        return success();
+    public AjaxResult markReadAll(String ids) {
+        biz.markReadAll(ids);
+        return AjaxResult.success();
     }
 
     /**
-     * 已读用户列表数据
+     * 读取请求分页参数并经 Biz、Facade 传给 Service，查询完成后保留原分页响应。
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @param noticeId    noticeId 请求参数或领域数据
+     * @param searchValue searchValue 请求参数或领域数据
+     * @return 原接口约定的处理结果；未找到或校验失败沿用原语义
      */
     @PreAuthorize("@ss.hasPermi('system:notice:list')")
     @GetMapping("/readUsers/list")
     @ResponseBody
-    public TableDataInfo readUsersList(Long noticeId, String searchValue)
-    {
-        startPage();
-        List<?> list = noticeReadService.selectReadUsersByNoticeId(noticeId, searchValue);
-        return getDataTable(list);
+    public TableDataInfo readUsersList(Long noticeId, String searchValue) {
+        return WebResponses.toWeb(getDataTable(biz.readUsersList(noticeId, searchValue, getPageDomain())));
     }
 
     /**
-     * 删除通知公告
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @param noticeIds noticeIds 请求参数或领域数据
+     * @return 原接口约定的处理结果；未找到或校验失败沿用原语义
      */
     @PreAuthorize("@ss.hasPermi('system:notice:remove')")
     @Log(title = "通知公告", businessType = BusinessType.DELETE)
     @DeleteMapping("/{noticeIds}")
-    public AjaxResult remove(@PathVariable Long[] noticeIds)
-    {
-        noticeReadService.deleteByNoticeIds(noticeIds);
-        return toAjax(noticeService.deleteNoticeByIds(noticeIds));
+    public AjaxResult remove(@PathVariable Long[] noticeIds) {
+        return toAjax(biz.remove(noticeIds));
     }
 }

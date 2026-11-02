@@ -1,38 +1,42 @@
 package com.ruoyi.web.controller.system;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
-import com.ruoyi.common.core.domain.model.RegisterBody;
-import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.framework.web.service.SysRegisterService;
-import com.ruoyi.system.service.ISysConfigService;
+import com.ruoyi.biz.system.SysRegisterBiz;
+import com.ruoyi.web.convert.WebBoundaryConvert;
+import com.ruoyi.web.convert.WebResponses;
+import com.ruoyi.web.form.system.*;
+import com.ruoyi.web.form.quartz.*;
+import com.ruoyi.web.form.framework.*;
 
 /**
- * 注册验证
- * 
- * @author ruoyi
+ * HTTP 协议入口；业务调用只通过 Biz，保留既有权限和审计注解。
  */
 @RestController
-public class SysRegisterController extends BaseController
-{
-    @Autowired
-    private SysRegisterService registerService;
+public class SysRegisterController extends BaseController {
+    private final SysRegisterBiz biz;
 
-    @Autowired
-    private ISysConfigService configService;
+    /**
+     * 通过构造器接收应用入口，不在控制器内访问领域服务或数据库。
+     *
+     * @param biz 应用业务入口
+     */
+    public SysRegisterController(SysRegisterBiz biz) {
+        this.biz = biz;
+    }
 
+    /**
+     * 接收请求并保留原参数校验，调用应用层业务入口，再转换并返回原协议的响应。
+     *
+     * @param user user 请求参数或领域数据
+     * @return 原接口约定的处理结果；未找到或校验失败沿用原语义
+     */
     @PostMapping("/register")
-    public AjaxResult register(@RequestBody RegisterBody user)
-    {
-        if (!("true".equals(configService.selectConfigByKey("sys.account.registerUser"))))
-        {
-            return error("当前系统没有开启注册功能！");
-        }
-        String msg = registerService.register(user);
-        return StringUtils.isEmpty(msg) ? success() : error(msg);
+    public AjaxResult register(@RequestBody RegisterBodyForm user) {
+        biz.register(WebBoundaryConvert.INSTANCE.toRegisterParam(user));
+        return AjaxResult.success();
     }
 }

@@ -1,0 +1,7 @@
+interface:
+  display_name: "Jenkins 生产发布"
+  short_description: "单次调用发布并确定部署，返回精简结果，可同时统计当前轮次 Token"
+  default_prompt: "使用 $jenkins-production-deploy 发布指定任务，确定部署后结束。"
+
+policy:
+  allow_implicit_invocation: true

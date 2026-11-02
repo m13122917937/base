@@ -1,7 +1,9 @@
 package com.ruoyi.system.mapper;
 
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 import com.ruoyi.system.domain.SysNotice;
 import com.ruoyi.system.domain.SysNoticeRead;
@@ -11,8 +13,7 @@ import com.ruoyi.system.domain.SysNoticeRead;
  *
  * @author ruoyi
  */
-public interface SysNoticeReadMapper
-{
+public interface SysNoticeReadMapper extends BaseMapper<SysNoticeRead> {
     /**
      * 新增已读记录（忽略重复）
      *
@@ -28,15 +29,6 @@ public interface SysNoticeReadMapper
      * @return 未读数量
      */
     public int selectUnreadCount(@Param("userId") Long userId);
-
-    /**
-     * 查询某用户是否已读某公告
-     *
-     * @param noticeId 公告ID
-     * @param userId   用户ID
-     * @return 已读记录数（0未读 1已读）
-     */
-    public int selectIsRead(@Param("noticeId") Long noticeId, @Param("userId") Long userId);
 
     /**
      * 批量标记已读
@@ -59,17 +51,9 @@ public interface SysNoticeReadMapper
     /**
      * 查询已阅读某公告的用户列表
      *
-     * @param noticeId 公告ID
+     * @param noticeId    公告ID
      * @param searchValue 搜索值
      * @return 已读用户列表
      */
     public List<Map<String, Object>> selectReadUsersByNoticeId(@Param("noticeId") Long noticeId, @Param("searchValue") String searchValue);
-
-    /**
-     * 公告删除时清理对应已读记录
-     *
-     * @param noticeIds 公告ID数组
-     * @return 结果
-     */
-    public int deleteByNoticeIds(@Param("noticeIds") Long[] noticeIds);
 }

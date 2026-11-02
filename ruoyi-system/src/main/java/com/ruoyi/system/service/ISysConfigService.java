@@ -1,18 +1,20 @@
 package com.ruoyi.system.service;
 
+import com.baomidou.mybatisplus.spring.service.IService;
+import com.ruoyi.common.core.page.PageDomain;
 import java.util.List;
+
 import com.ruoyi.system.domain.SysConfig;
 
 /**
  * 参数配置 服务层
- * 
+ *
  * @author ruoyi
  */
-public interface ISysConfigService
-{
+public interface ISysConfigService extends IService<SysConfig> {
     /**
      * 查询参数配置信息
-     * 
+     *
      * @param configId 参数配置ID
      * @return 参数配置信息
      */
@@ -20,30 +22,33 @@ public interface ISysConfigService
 
     /**
      * 根据键名查询参数配置信息
-     * 
+     *
      * @param configKey 参数键名
      * @return 参数键值
      */
     public String selectConfigByKey(String configKey);
 
     /**
-     * 获取验证码开关
-     * 
-     * @return true开启，false关闭
-     */
-    public boolean selectCaptchaEnabled();
-
-    /**
      * 查询参数配置列表
-     * 
+     *
      * @param config 参数配置信息
      * @return 参数配置集合
      */
     public List<SysConfig> selectConfigList(SysConfig config);
 
     /**
+     * 在目标 Mapper 查询前启动分页并在 finally 中清理线程状态，保留原过滤条件及数据权限。
+     * 查询失败时异常原样向上传递，不新增事务；null 分页参数表示全量查询。
+     *
+     * @param config 原查询条件
+     * @param pageDomain 通用分页参数，不读取 Servlet 请求
+     * @return 保留 Page 元数据的查询列表
+     */
+    public List<SysConfig> selectConfigList(SysConfig config, PageDomain pageDomain);
+
+    /**
      * 新增参数配置
-     * 
+     *
      * @param config 参数配置信息
      * @return 结果
      */
@@ -51,7 +56,7 @@ public interface ISysConfigService
 
     /**
      * 修改参数配置
-     * 
+     *
      * @param config 参数配置信息
      * @return 结果
      */
@@ -59,7 +64,7 @@ public interface ISysConfigService
 
     /**
      * 批量删除参数信息
-     * 
+     *
      * @param configIds 需要删除的参数ID
      */
     public void deleteConfigByIds(Long[] configIds);
@@ -81,7 +86,7 @@ public interface ISysConfigService
 
     /**
      * 校验参数键名是否唯一
-     * 
+     *
      * @param config 参数信息
      * @return 结果
      */

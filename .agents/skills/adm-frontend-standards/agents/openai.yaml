@@ -1,0 +1,4 @@
+interface:
+  display_name: "CF Vue3 前端规范"
+  short_description: "规范 Vue3 和 Element Plus 项目的权限菜单、布局、接口与构建验证"
+  default_prompt: "使用 $adm-frontend-standards 调整并检查当前 CF 项目的前端代码。"

@@ -1,0 +1,4 @@
+interface:
+  display_name: "CF 后端架构与规范"
+  short_description: "规范 Java 17 和 Spring Boot 3 项目的分层、领域边界、SQL 与验证"
+  default_prompt: "使用 $adm-backend-architecture 调整并检查当前 CF 项目的后端代码。"

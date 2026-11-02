@@ -1,0 +1,1661 @@
+[
+  {
+    "controller": "com.ruoyi.web.controller.common.CommonController",
+    "method": "fileDownload",
+    "classPaths": [
+      "/common"
+    ],
+    "paths": [
+      "/download"
+    ],
+    "verbs": [
+      "GET"
+    ],
+    "permission": null,
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.common.CommonController",
+    "method": "resourceDownload",
+    "classPaths": [
+      "/common"
+    ],
+    "paths": [
+      "/download/resource"
+    ],
+    "verbs": [
+      "GET"
+    ],
+    "permission": null,
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.monitor.SysLogininforController",
+    "method": "list",
+    "classPaths": [
+      "/monitor/logininfor"
+    ],
+    "paths": [
+      "/list"
+    ],
+    "verbs": [
+      "GET"
+    ],
+    "permission": "@ss.hasPermi('monitor:logininfor:list')",
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.monitor.SysLogininforController",
+    "method": "export",
+    "classPaths": [
+      "/monitor/logininfor"
+    ],
+    "paths": [
+      "/export"
+    ],
+    "verbs": [
+      "POST"
+    ],
+    "permission": "@ss.hasPermi('monitor:logininfor:export')",
+    "logTitle": "登录日志",
+    "logType": "EXPORT"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.monitor.SysLogininforController",
+    "method": "remove",
+    "classPaths": [
+      "/monitor/logininfor"
+    ],
+    "paths": [
+      "/{infoIds}"
+    ],
+    "verbs": [
+      "DELETE"
+    ],
+    "permission": "@ss.hasPermi('monitor:logininfor:remove')",
+    "logTitle": "登录日志",
+    "logType": "DELETE"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.monitor.SysLogininforController",
+    "method": "clean",
+    "classPaths": [
+      "/monitor/logininfor"
+    ],
+    "paths": [
+      "/clean"
+    ],
+    "verbs": [
+      "DELETE"
+    ],
+    "permission": "@ss.hasPermi('monitor:logininfor:remove')",
+    "logTitle": "登录日志",
+    "logType": "CLEAN"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.monitor.SysOperlogController",
+    "method": "list",
+    "classPaths": [
+      "/monitor/operlog"
+    ],
+    "paths": [
+      "/list"
+    ],
+    "verbs": [
+      "GET"
+    ],
+    "permission": "@ss.hasPermi('monitor:operlog:list')",
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.monitor.SysOperlogController",
+    "method": "export",
+    "classPaths": [
+      "/monitor/operlog"
+    ],
+    "paths": [
+      "/export"
+    ],
+    "verbs": [
+      "POST"
+    ],
+    "permission": "@ss.hasPermi('monitor:operlog:export')",
+    "logTitle": "操作日志",
+    "logType": "EXPORT"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.monitor.SysOperlogController",
+    "method": "remove",
+    "classPaths": [
+      "/monitor/operlog"
+    ],
+    "paths": [
+      "/{operIds}"
+    ],
+    "verbs": [
+      "DELETE"
+    ],
+    "permission": "@ss.hasPermi('monitor:operlog:remove')",
+    "logTitle": "操作日志",
+    "logType": "DELETE"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.monitor.SysOperlogController",
+    "method": "clean",
+    "classPaths": [
+      "/monitor/operlog"
+    ],
+    "paths": [
+      "/clean"
+    ],
+    "verbs": [
+      "DELETE"
+    ],
+    "permission": "@ss.hasPermi('monitor:operlog:remove')",
+    "logTitle": "操作日志",
+    "logType": "CLEAN"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysConfigController",
+    "method": "list",
+    "classPaths": [
+      "/system/config"
+    ],
+    "paths": [
+      "/list"
+    ],
+    "verbs": [
+      "GET"
+    ],
+    "permission": "@ss.hasPermi('system:config:list')",
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysConfigController",
+    "method": "export",
+    "classPaths": [
+      "/system/config"
+    ],
+    "paths": [
+      "/export"
+    ],
+    "verbs": [
+      "POST"
+    ],
+    "permission": "@ss.hasPermi('system:config:export')",
+    "logTitle": "参数管理",
+    "logType": "EXPORT"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysConfigController",
+    "method": "getInfo",
+    "classPaths": [
+      "/system/config"
+    ],
+    "paths": [
+      "/{configId}"
+    ],
+    "verbs": [
+      "GET"
+    ],
+    "permission": "@ss.hasPermi('system:config:query')",
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysConfigController",
+    "method": "getConfigKey",
+    "classPaths": [
+      "/system/config"
+    ],
+    "paths": [
+      "/configKey/{configKey}"
+    ],
+    "verbs": [
+      "GET"
+    ],
+    "permission": null,
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysConfigController",
+    "method": "add",
+    "classPaths": [
+      "/system/config"
+    ],
+    "paths": [],
+    "verbs": [
+      "POST"
+    ],
+    "permission": "@ss.hasPermi('system:config:add')",
+    "logTitle": "参数管理",
+    "logType": "INSERT"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysConfigController",
+    "method": "edit",
+    "classPaths": [
+      "/system/config"
+    ],
+    "paths": [],
+    "verbs": [
+      "PUT"
+    ],
+    "permission": "@ss.hasPermi('system:config:edit')",
+    "logTitle": "参数管理",
+    "logType": "UPDATE"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysConfigController",
+    "method": "remove",
+    "classPaths": [
+      "/system/config"
+    ],
+    "paths": [
+      "/{configIds}"
+    ],
+    "verbs": [
+      "DELETE"
+    ],
+    "permission": "@ss.hasPermi('system:config:remove')",
+    "logTitle": "参数管理",
+    "logType": "DELETE"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysConfigController",
+    "method": "refreshCache",
+    "classPaths": [
+      "/system/config"
+    ],
+    "paths": [
+      "/refreshCache"
+    ],
+    "verbs": [
+      "DELETE"
+    ],
+    "permission": "@ss.hasPermi('system:config:remove')",
+    "logTitle": "参数管理",
+    "logType": "CLEAN"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysDeptController",
+    "method": "list",
+    "classPaths": [
+      "/system/dept"
+    ],
+    "paths": [
+      "/list"
+    ],
+    "verbs": [
+      "GET"
+    ],
+    "permission": "@ss.hasPermi('system:dept:list')",
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysDeptController",
+    "method": "excludeChild",
+    "classPaths": [
+      "/system/dept"
+    ],
+    "paths": [
+      "/list/exclude/{deptId}"
+    ],
+    "verbs": [
+      "GET"
+    ],
+    "permission": "@ss.hasPermi('system:dept:list')",
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysDeptController",
+    "method": "getInfo",
+    "classPaths": [
+      "/system/dept"
+    ],
+    "paths": [
+      "/{deptId}"
+    ],
+    "verbs": [
+      "GET"
+    ],
+    "permission": "@ss.hasPermi('system:dept:query')",
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysDeptController",
+    "method": "add",
+    "classPaths": [
+      "/system/dept"
+    ],
+    "paths": [],
+    "verbs": [
+      "POST"
+    ],
+    "permission": "@ss.hasPermi('system:dept:add')",
+    "logTitle": "部门管理",
+    "logType": "INSERT"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysDeptController",
+    "method": "edit",
+    "classPaths": [
+      "/system/dept"
+    ],
+    "paths": [],
+    "verbs": [
+      "PUT"
+    ],
+    "permission": "@ss.hasPermi('system:dept:edit')",
+    "logTitle": "部门管理",
+    "logType": "UPDATE"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysDeptController",
+    "method": "updateSort",
+    "classPaths": [
+      "/system/dept"
+    ],
+    "paths": [
+      "/updateSort"
+    ],
+    "verbs": [
+      "PUT"
+    ],
+    "permission": "@ss.hasPermi('system:dept:edit')",
+    "logTitle": "保存部门排序",
+    "logType": "UPDATE"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysDeptController",
+    "method": "remove",
+    "classPaths": [
+      "/system/dept"
+    ],
+    "paths": [
+      "/{deptId}"
+    ],
+    "verbs": [
+      "DELETE"
+    ],
+    "permission": "@ss.hasPermi('system:dept:remove')",
+    "logTitle": "部门管理",
+    "logType": "DELETE"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysDictDataController",
+    "method": "list",
+    "classPaths": [
+      "/system/dict/data"
+    ],
+    "paths": [
+      "/list"
+    ],
+    "verbs": [
+      "GET"
+    ],
+    "permission": "@ss.hasPermi('system:dict:list')",
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysDictDataController",
+    "method": "export",
+    "classPaths": [
+      "/system/dict/data"
+    ],
+    "paths": [
+      "/export"
+    ],
+    "verbs": [
+      "POST"
+    ],
+    "permission": "@ss.hasPermi('system:dict:export')",
+    "logTitle": "字典数据",
+    "logType": "EXPORT"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysDictDataController",
+    "method": "getInfo",
+    "classPaths": [
+      "/system/dict/data"
+    ],
+    "paths": [
+      "/{dictCode}"
+    ],
+    "verbs": [
+      "GET"
+    ],
+    "permission": "@ss.hasPermi('system:dict:query')",
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysDictDataController",
+    "method": "dictType",
+    "classPaths": [
+      "/system/dict/data"
+    ],
+    "paths": [
+      "/type/{dictType}"
+    ],
+    "verbs": [
+      "GET"
+    ],
+    "permission": null,
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysDictDataController",
+    "method": "add",
+    "classPaths": [
+      "/system/dict/data"
+    ],
+    "paths": [],
+    "verbs": [
+      "POST"
+    ],
+    "permission": "@ss.hasPermi('system:dict:add')",
+    "logTitle": "字典数据",
+    "logType": "INSERT"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysDictDataController",
+    "method": "edit",
+    "classPaths": [
+      "/system/dict/data"
+    ],
+    "paths": [],
+    "verbs": [
+      "PUT"
+    ],
+    "permission": "@ss.hasPermi('system:dict:edit')",
+    "logTitle": "字典数据",
+    "logType": "UPDATE"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysDictDataController",
+    "method": "remove",
+    "classPaths": [
+      "/system/dict/data"
+    ],
+    "paths": [
+      "/{dictCodes}"
+    ],
+    "verbs": [
+      "DELETE"
+    ],
+    "permission": "@ss.hasPermi('system:dict:remove')",
+    "logTitle": "字典类型",
+    "logType": "DELETE"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysDictTypeController",
+    "method": "list",
+    "classPaths": [
+      "/system/dict/type"
+    ],
+    "paths": [
+      "/list"
+    ],
+    "verbs": [
+      "GET"
+    ],
+    "permission": "@ss.hasPermi('system:dict:list')",
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysDictTypeController",
+    "method": "export",
+    "classPaths": [
+      "/system/dict/type"
+    ],
+    "paths": [
+      "/export"
+    ],
+    "verbs": [
+      "POST"
+    ],
+    "permission": "@ss.hasPermi('system:dict:export')",
+    "logTitle": "字典类型",
+    "logType": "EXPORT"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysDictTypeController",
+    "method": "getInfo",
+    "classPaths": [
+      "/system/dict/type"
+    ],
+    "paths": [
+      "/{dictId}"
+    ],
+    "verbs": [
+      "GET"
+    ],
+    "permission": "@ss.hasPermi('system:dict:query')",
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysDictTypeController",
+    "method": "add",
+    "classPaths": [
+      "/system/dict/type"
+    ],
+    "paths": [],
+    "verbs": [
+      "POST"
+    ],
+    "permission": "@ss.hasPermi('system:dict:add')",
+    "logTitle": "字典类型",
+    "logType": "INSERT"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysDictTypeController",
+    "method": "edit",
+    "classPaths": [
+      "/system/dict/type"
+    ],
+    "paths": [],
+    "verbs": [
+      "PUT"
+    ],
+    "permission": "@ss.hasPermi('system:dict:edit')",
+    "logTitle": "字典类型",
+    "logType": "UPDATE"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysDictTypeController",
+    "method": "remove",
+    "classPaths": [
+      "/system/dict/type"
+    ],
+    "paths": [
+      "/{dictIds}"
+    ],
+    "verbs": [
+      "DELETE"
+    ],
+    "permission": "@ss.hasPermi('system:dict:remove')",
+    "logTitle": "字典类型",
+    "logType": "DELETE"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysDictTypeController",
+    "method": "refreshCache",
+    "classPaths": [
+      "/system/dict/type"
+    ],
+    "paths": [
+      "/refreshCache"
+    ],
+    "verbs": [
+      "DELETE"
+    ],
+    "permission": "@ss.hasPermi('system:dict:remove')",
+    "logTitle": "字典类型",
+    "logType": "CLEAN"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysDictTypeController",
+    "method": "optionselect",
+    "classPaths": [
+      "/system/dict/type"
+    ],
+    "paths": [
+      "/optionselect"
+    ],
+    "verbs": [
+      "GET"
+    ],
+    "permission": null,
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysIndexController",
+    "method": "index",
+    "classPaths": [],
+    "paths": [
+      "/"
+    ],
+    "verbs": [],
+    "permission": null,
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysIndexController",
+    "method": "unlockScreen",
+    "classPaths": [],
+    "paths": [
+      "/unlockscreen"
+    ],
+    "verbs": [
+      "POST"
+    ],
+    "permission": null,
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysLoginController",
+    "method": "login",
+    "classPaths": [],
+    "paths": [
+      "/login"
+    ],
+    "verbs": [
+      "POST"
+    ],
+    "permission": null,
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysLoginController",
+    "method": "getInfo",
+    "classPaths": [],
+    "paths": [
+      "getInfo"
+    ],
+    "verbs": [
+      "GET"
+    ],
+    "permission": null,
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysLoginController",
+    "method": "getRouters",
+    "classPaths": [],
+    "paths": [
+      "getRouters"
+    ],
+    "verbs": [
+      "GET"
+    ],
+    "permission": null,
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysMenuController",
+    "method": "list",
+    "classPaths": [
+      "/system/menu"
+    ],
+    "paths": [
+      "/list"
+    ],
+    "verbs": [
+      "GET"
+    ],
+    "permission": "@ss.hasPermi('system:menu:list')",
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysMenuController",
+    "method": "getInfo",
+    "classPaths": [
+      "/system/menu"
+    ],
+    "paths": [
+      "/{menuId}"
+    ],
+    "verbs": [
+      "GET"
+    ],
+    "permission": "@ss.hasPermi('system:menu:query')",
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysMenuController",
+    "method": "treeselect",
+    "classPaths": [
+      "/system/menu"
+    ],
+    "paths": [
+      "/treeselect"
+    ],
+    "verbs": [
+      "GET"
+    ],
+    "permission": null,
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysMenuController",
+    "method": "roleMenuTreeselect",
+    "classPaths": [
+      "/system/menu"
+    ],
+    "paths": [
+      "/roleMenuTreeselect/{roleId}"
+    ],
+    "verbs": [
+      "GET"
+    ],
+    "permission": null,
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysMenuController",
+    "method": "add",
+    "classPaths": [
+      "/system/menu"
+    ],
+    "paths": [],
+    "verbs": [
+      "POST"
+    ],
+    "permission": "@ss.hasPermi('system:menu:add')",
+    "logTitle": "菜单管理",
+    "logType": "INSERT"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysMenuController",
+    "method": "edit",
+    "classPaths": [
+      "/system/menu"
+    ],
+    "paths": [],
+    "verbs": [
+      "PUT"
+    ],
+    "permission": "@ss.hasPermi('system:menu:edit')",
+    "logTitle": "菜单管理",
+    "logType": "UPDATE"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysMenuController",
+    "method": "updateSort",
+    "classPaths": [
+      "/system/menu"
+    ],
+    "paths": [
+      "/updateSort"
+    ],
+    "verbs": [
+      "PUT"
+    ],
+    "permission": "@ss.hasPermi('system:menu:edit')",
+    "logTitle": "保存菜单排序",
+    "logType": "UPDATE"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysMenuController",
+    "method": "remove",
+    "classPaths": [
+      "/system/menu"
+    ],
+    "paths": [
+      "/{menuId}"
+    ],
+    "verbs": [
+      "DELETE"
+    ],
+    "permission": "@ss.hasPermi('system:menu:remove')",
+    "logTitle": "菜单管理",
+    "logType": "DELETE"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysNoticeController",
+    "method": "list",
+    "classPaths": [
+      "/system/notice"
+    ],
+    "paths": [
+      "/list"
+    ],
+    "verbs": [
+      "GET"
+    ],
+    "permission": "@ss.hasPermi('system:notice:list')",
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysNoticeController",
+    "method": "getInfo",
+    "classPaths": [
+      "/system/notice"
+    ],
+    "paths": [
+      "/{noticeId}"
+    ],
+    "verbs": [
+      "GET"
+    ],
+    "permission": null,
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysNoticeController",
+    "method": "add",
+    "classPaths": [
+      "/system/notice"
+    ],
+    "paths": [],
+    "verbs": [
+      "POST"
+    ],
+    "permission": "@ss.hasPermi('system:notice:add')",
+    "logTitle": "通知公告",
+    "logType": "INSERT"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysNoticeController",
+    "method": "edit",
+    "classPaths": [
+      "/system/notice"
+    ],
+    "paths": [],
+    "verbs": [
+      "PUT"
+    ],
+    "permission": "@ss.hasPermi('system:notice:edit')",
+    "logTitle": "通知公告",
+    "logType": "UPDATE"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysNoticeController",
+    "method": "listTop",
+    "classPaths": [
+      "/system/notice"
+    ],
+    "paths": [
+      "/listTop"
+    ],
+    "verbs": [
+      "GET"
+    ],
+    "permission": null,
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysNoticeController",
+    "method": "markRead",
+    "classPaths": [
+      "/system/notice"
+    ],
+    "paths": [
+      "/markRead"
+    ],
+    "verbs": [
+      "POST"
+    ],
+    "permission": null,
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysNoticeController",
+    "method": "markReadAll",
+    "classPaths": [
+      "/system/notice"
+    ],
+    "paths": [
+      "/markReadAll"
+    ],
+    "verbs": [
+      "POST"
+    ],
+    "permission": null,
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysNoticeController",
+    "method": "readUsersList",
+    "classPaths": [
+      "/system/notice"
+    ],
+    "paths": [
+      "/readUsers/list"
+    ],
+    "verbs": [
+      "GET"
+    ],
+    "permission": "@ss.hasPermi('system:notice:list')",
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysNoticeController",
+    "method": "remove",
+    "classPaths": [
+      "/system/notice"
+    ],
+    "paths": [
+      "/{noticeIds}"
+    ],
+    "verbs": [
+      "DELETE"
+    ],
+    "permission": "@ss.hasPermi('system:notice:remove')",
+    "logTitle": "通知公告",
+    "logType": "DELETE"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysProfileController",
+    "method": "profile",
+    "classPaths": [
+      "/system/user/profile"
+    ],
+    "paths": [],
+    "verbs": [
+      "GET"
+    ],
+    "permission": null,
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysProfileController",
+    "method": "updateProfile",
+    "classPaths": [
+      "/system/user/profile"
+    ],
+    "paths": [],
+    "verbs": [
+      "PUT"
+    ],
+    "permission": null,
+    "logTitle": "个人信息",
+    "logType": "UPDATE"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysProfileController",
+    "method": "updatePwd",
+    "classPaths": [
+      "/system/user/profile"
+    ],
+    "paths": [
+      "/updatePwd"
+    ],
+    "verbs": [
+      "PUT"
+    ],
+    "permission": null,
+    "logTitle": "个人信息",
+    "logType": "UPDATE"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysRegisterController",
+    "method": "register",
+    "classPaths": [],
+    "paths": [
+      "/register"
+    ],
+    "verbs": [
+      "POST"
+    ],
+    "permission": null,
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysRoleController",
+    "method": "list",
+    "classPaths": [
+      "/system/role"
+    ],
+    "paths": [
+      "/list"
+    ],
+    "verbs": [
+      "GET"
+    ],
+    "permission": "@ss.hasPermi('system:role:list')",
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysRoleController",
+    "method": "export",
+    "classPaths": [
+      "/system/role"
+    ],
+    "paths": [
+      "/export"
+    ],
+    "verbs": [
+      "POST"
+    ],
+    "permission": "@ss.hasPermi('system:role:export')",
+    "logTitle": "角色管理",
+    "logType": "EXPORT"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysRoleController",
+    "method": "getInfo",
+    "classPaths": [
+      "/system/role"
+    ],
+    "paths": [
+      "/{roleId}"
+    ],
+    "verbs": [
+      "GET"
+    ],
+    "permission": "@ss.hasPermi('system:role:query')",
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysRoleController",
+    "method": "add",
+    "classPaths": [
+      "/system/role"
+    ],
+    "paths": [],
+    "verbs": [
+      "POST"
+    ],
+    "permission": "@ss.hasPermi('system:role:add')",
+    "logTitle": "角色管理",
+    "logType": "INSERT"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysRoleController",
+    "method": "edit",
+    "classPaths": [
+      "/system/role"
+    ],
+    "paths": [],
+    "verbs": [
+      "PUT"
+    ],
+    "permission": "@ss.hasPermi('system:role:edit')",
+    "logTitle": "角色管理",
+    "logType": "UPDATE"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysRoleController",
+    "method": "dataScope",
+    "classPaths": [
+      "/system/role"
+    ],
+    "paths": [
+      "/dataScope"
+    ],
+    "verbs": [
+      "PUT"
+    ],
+    "permission": "@ss.hasPermi('system:role:edit')",
+    "logTitle": "角色管理",
+    "logType": "UPDATE"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysRoleController",
+    "method": "changeStatus",
+    "classPaths": [
+      "/system/role"
+    ],
+    "paths": [
+      "/changeStatus"
+    ],
+    "verbs": [
+      "PUT"
+    ],
+    "permission": "@ss.hasPermi('system:role:edit')",
+    "logTitle": "角色管理",
+    "logType": "UPDATE"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysRoleController",
+    "method": "remove",
+    "classPaths": [
+      "/system/role"
+    ],
+    "paths": [
+      "/{roleIds}"
+    ],
+    "verbs": [
+      "DELETE"
+    ],
+    "permission": "@ss.hasPermi('system:role:remove')",
+    "logTitle": "角色管理",
+    "logType": "DELETE"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysRoleController",
+    "method": "optionselect",
+    "classPaths": [
+      "/system/role"
+    ],
+    "paths": [
+      "/optionselect"
+    ],
+    "verbs": [
+      "GET"
+    ],
+    "permission": "@ss.hasPermi('system:role:query')",
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysRoleController",
+    "method": "allocatedList",
+    "classPaths": [
+      "/system/role"
+    ],
+    "paths": [
+      "/authUser/allocatedList"
+    ],
+    "verbs": [
+      "GET"
+    ],
+    "permission": "@ss.hasPermi('system:role:list')",
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysRoleController",
+    "method": "unallocatedList",
+    "classPaths": [
+      "/system/role"
+    ],
+    "paths": [
+      "/authUser/unallocatedList"
+    ],
+    "verbs": [
+      "GET"
+    ],
+    "permission": "@ss.hasPermi('system:role:list')",
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysRoleController",
+    "method": "cancelAuthUser",
+    "classPaths": [
+      "/system/role"
+    ],
+    "paths": [
+      "/authUser/cancel"
+    ],
+    "verbs": [
+      "PUT"
+    ],
+    "permission": "@ss.hasPermi('system:role:edit')",
+    "logTitle": "角色管理",
+    "logType": "GRANT"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysRoleController",
+    "method": "cancelAuthUserAll",
+    "classPaths": [
+      "/system/role"
+    ],
+    "paths": [
+      "/authUser/cancelAll"
+    ],
+    "verbs": [
+      "PUT"
+    ],
+    "permission": "@ss.hasPermi('system:role:edit')",
+    "logTitle": "角色管理",
+    "logType": "GRANT"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysRoleController",
+    "method": "selectAuthUserAll",
+    "classPaths": [
+      "/system/role"
+    ],
+    "paths": [
+      "/authUser/selectAll"
+    ],
+    "verbs": [
+      "PUT"
+    ],
+    "permission": "@ss.hasPermi('system:role:edit')",
+    "logTitle": "角色管理",
+    "logType": "GRANT"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysRoleController",
+    "method": "deptTree",
+    "classPaths": [
+      "/system/role"
+    ],
+    "paths": [
+      "/deptTree/{roleId}"
+    ],
+    "verbs": [
+      "GET"
+    ],
+    "permission": "@ss.hasPermi('system:role:query')",
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysUserController",
+    "method": "list",
+    "classPaths": [
+      "/system/user"
+    ],
+    "paths": [
+      "/list"
+    ],
+    "verbs": [
+      "GET"
+    ],
+    "permission": "@ss.hasPermi('system:user:list')",
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysUserController",
+    "method": "export",
+    "classPaths": [
+      "/system/user"
+    ],
+    "paths": [
+      "/export"
+    ],
+    "verbs": [
+      "POST"
+    ],
+    "permission": "@ss.hasPermi('system:user:export')",
+    "logTitle": "用户管理",
+    "logType": "EXPORT"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysUserController",
+    "method": "importData",
+    "classPaths": [
+      "/system/user"
+    ],
+    "paths": [
+      "/importData"
+    ],
+    "verbs": [
+      "POST"
+    ],
+    "permission": "@ss.hasPermi('system:user:import')",
+    "logTitle": "用户管理",
+    "logType": "IMPORT"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysUserController",
+    "method": "importTemplate",
+    "classPaths": [
+      "/system/user"
+    ],
+    "paths": [
+      "/importTemplate"
+    ],
+    "verbs": [
+      "POST"
+    ],
+    "permission": null,
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysUserController",
+    "method": "getInfo",
+    "classPaths": [
+      "/system/user"
+    ],
+    "paths": [
+      "/",
+      "/{userId}"
+    ],
+    "verbs": [
+      "GET"
+    ],
+    "permission": "@ss.hasPermi('system:user:query')",
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysUserController",
+    "method": "add",
+    "classPaths": [
+      "/system/user"
+    ],
+    "paths": [],
+    "verbs": [
+      "POST"
+    ],
+    "permission": "@ss.hasPermi('system:user:add')",
+    "logTitle": "用户管理",
+    "logType": "INSERT"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysUserController",
+    "method": "edit",
+    "classPaths": [
+      "/system/user"
+    ],
+    "paths": [],
+    "verbs": [
+      "PUT"
+    ],
+    "permission": "@ss.hasPermi('system:user:edit')",
+    "logTitle": "用户管理",
+    "logType": "UPDATE"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysUserController",
+    "method": "remove",
+    "classPaths": [
+      "/system/user"
+    ],
+    "paths": [
+      "/{userIds}"
+    ],
+    "verbs": [
+      "DELETE"
+    ],
+    "permission": "@ss.hasPermi('system:user:remove')",
+    "logTitle": "用户管理",
+    "logType": "DELETE"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysUserController",
+    "method": "resetPwd",
+    "classPaths": [
+      "/system/user"
+    ],
+    "paths": [
+      "/resetPwd"
+    ],
+    "verbs": [
+      "PUT"
+    ],
+    "permission": "@ss.hasPermi('system:user:resetPwd')",
+    "logTitle": "用户管理",
+    "logType": "UPDATE"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysUserController",
+    "method": "changeStatus",
+    "classPaths": [
+      "/system/user"
+    ],
+    "paths": [
+      "/changeStatus"
+    ],
+    "verbs": [
+      "PUT"
+    ],
+    "permission": "@ss.hasPermi('system:user:edit')",
+    "logTitle": "用户管理",
+    "logType": "UPDATE"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysUserController",
+    "method": "authRole",
+    "classPaths": [
+      "/system/user"
+    ],
+    "paths": [
+      "/authRole/{userId}"
+    ],
+    "verbs": [
+      "GET"
+    ],
+    "permission": "@ss.hasPermi('system:user:query')",
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysUserController",
+    "method": "insertAuthRole",
+    "classPaths": [
+      "/system/user"
+    ],
+    "paths": [
+      "/authRole"
+    ],
+    "verbs": [
+      "PUT"
+    ],
+    "permission": "@ss.hasPermi('system:user:edit')",
+    "logTitle": "用户管理",
+    "logType": "GRANT"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.system.SysUserController",
+    "method": "deptTree",
+    "classPaths": [
+      "/system/user"
+    ],
+    "paths": [
+      "/deptTree"
+    ],
+    "verbs": [
+      "GET"
+    ],
+    "permission": "@ss.hasPermi('system:user:list')",
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.quartz.SysJobController",
+    "method": "list",
+    "classPaths": [
+      "/monitor/job"
+    ],
+    "paths": [
+      "/list"
+    ],
+    "verbs": [
+      "GET"
+    ],
+    "permission": "@ss.hasPermi('monitor:job:list')",
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.quartz.SysJobController",
+    "method": "export",
+    "classPaths": [
+      "/monitor/job"
+    ],
+    "paths": [
+      "/export"
+    ],
+    "verbs": [
+      "POST"
+    ],
+    "permission": "@ss.hasPermi('monitor:job:export')",
+    "logTitle": "定时任务",
+    "logType": "EXPORT"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.quartz.SysJobController",
+    "method": "getInfo",
+    "classPaths": [
+      "/monitor/job"
+    ],
+    "paths": [
+      "/{jobId}"
+    ],
+    "verbs": [
+      "GET"
+    ],
+    "permission": "@ss.hasPermi('monitor:job:query')",
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.quartz.SysJobController",
+    "method": "add",
+    "classPaths": [
+      "/monitor/job"
+    ],
+    "paths": [],
+    "verbs": [
+      "POST"
+    ],
+    "permission": "@ss.hasPermi('monitor:job:add')",
+    "logTitle": "定时任务",
+    "logType": "INSERT"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.quartz.SysJobController",
+    "method": "edit",
+    "classPaths": [
+      "/monitor/job"
+    ],
+    "paths": [],
+    "verbs": [
+      "PUT"
+    ],
+    "permission": "@ss.hasPermi('monitor:job:edit')",
+    "logTitle": "定时任务",
+    "logType": "UPDATE"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.quartz.SysJobController",
+    "method": "changeStatus",
+    "classPaths": [
+      "/monitor/job"
+    ],
+    "paths": [
+      "/changeStatus"
+    ],
+    "verbs": [
+      "PUT"
+    ],
+    "permission": "@ss.hasPermi('monitor:job:changeStatus')",
+    "logTitle": "定时任务",
+    "logType": "UPDATE"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.quartz.SysJobController",
+    "method": "run",
+    "classPaths": [
+      "/monitor/job"
+    ],
+    "paths": [
+      "/run"
+    ],
+    "verbs": [
+      "PUT"
+    ],
+    "permission": "@ss.hasPermi('monitor:job:changeStatus')",
+    "logTitle": "定时任务",
+    "logType": "UPDATE"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.quartz.SysJobController",
+    "method": "remove",
+    "classPaths": [
+      "/monitor/job"
+    ],
+    "paths": [
+      "/{jobIds}"
+    ],
+    "verbs": [
+      "DELETE"
+    ],
+    "permission": "@ss.hasPermi('monitor:job:remove')",
+    "logTitle": "定时任务",
+    "logType": "DELETE"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.quartz.SysJobLogController",
+    "method": "list",
+    "classPaths": [
+      "/monitor/jobLog"
+    ],
+    "paths": [
+      "/list"
+    ],
+    "verbs": [
+      "GET"
+    ],
+    "permission": "@ss.hasPermi('monitor:job:list')",
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.quartz.SysJobLogController",
+    "method": "export",
+    "classPaths": [
+      "/monitor/jobLog"
+    ],
+    "paths": [
+      "/export"
+    ],
+    "verbs": [
+      "POST"
+    ],
+    "permission": "@ss.hasPermi('monitor:job:export')",
+    "logTitle": "任务调度日志",
+    "logType": "EXPORT"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.quartz.SysJobLogController",
+    "method": "getInfo",
+    "classPaths": [
+      "/monitor/jobLog"
+    ],
+    "paths": [
+      "/{jobLogId}"
+    ],
+    "verbs": [
+      "GET"
+    ],
+    "permission": "@ss.hasPermi('monitor:job:query')",
+    "logTitle": null,
+    "logType": null
+  },
+  {
+    "controller": "com.ruoyi.web.controller.quartz.SysJobLogController",
+    "method": "remove",
+    "classPaths": [
+      "/monitor/jobLog"
+    ],
+    "paths": [
+      "/{jobLogIds}"
+    ],
+    "verbs": [
+      "DELETE"
+    ],
+    "permission": "@ss.hasPermi('monitor:job:remove')",
+    "logTitle": "定时任务调度日志",
+    "logType": "DELETE"
+  },
+  {
+    "controller": "com.ruoyi.web.controller.quartz.SysJobLogController",
+    "method": "clean",
+    "classPaths": [
+      "/monitor/jobLog"
+    ],
+    "paths": [
+      "/clean"
+    ],
+    "verbs": [
+      "DELETE"
+    ],
+    "permission": "@ss.hasPermi('monitor:job:remove')",
+    "logTitle": "调度日志",
+    "logType": "CLEAN"
+  }
+]
